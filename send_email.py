@@ -34,7 +34,7 @@ def create_message() -> EmailMessage:
     return message
 
 
-def get_emails() -> Tuple:
+def get_username() -> Tuple:
     add_domain = lambda x: x + "@gmail.com" if not re.search(r"@gmail.com", x) else x
     tmp = next(iter(google_accounts[::-1][i]))  # temporary recipient
     _sender = next(iter(account))
@@ -69,7 +69,7 @@ if __name__ == "__main__":
     success = []
     failed = []
     for i, account in enumerate(google_accounts):
-        sender, recipient = get_emails()
+        sender, recipient = get_username()
         if sender in predefined["bad_accounts"]:
             continue
 
