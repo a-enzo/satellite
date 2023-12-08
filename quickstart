@@ -7,10 +7,13 @@ export PYTHONPATH=$PYTHONPATH:$(pwd)
 python3 -m pipenv install --dev --skip-lock pre-commit
 python3 -m pipenv run pre-commit install
 
-PASSWORD="0Cik-9528cx!"
 
 # Fetch Google Account username and password thru Bitwarden CLI
-#read -s -p "Bitwarden Master Password: " PASSWORD
+read -s -p "Bitwarden Master Password: " PASSWORD
 COLLECTION_ID="6f6295c9-d42a-407b-a721-ad27008e96b9"
+
 TESTING_ACCOUNTS=$(stdbuf -o0 echo "${PASSWORD}" | bw list items --collectionid "${COLLECTION_ID}")
+
+# Run Python3 program
 export TESTING_ACCOUNTS
+python3 -m pipenv run python send_email.py
