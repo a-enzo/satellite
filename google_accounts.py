@@ -16,7 +16,7 @@ def is_gmail_account(account: dict) -> bool:
 def get_testing_accounts() -> List:
     with open("artifacts/predefined.yaml", "r") as yml:
         collection_id = yaml.safe_load(yml)["collection_id"]
-    test_accounts = os.popen(f"bw list items --collectionid {collection_id}")
+    test_accounts = os.popen(f"bw list items --collectionid {collection_id}").read()
     return [
         acc["login"]["username"]
         for acc in yaml.safe_load(test_accounts)
