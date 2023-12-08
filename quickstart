@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# Setting up the Python3 environment
+pip3 install --upgrade pip
+pip3 install --user pipenv
+export PYTHONPATH=$PYTHONPATH:$(pwd)
+python3 -m pipenv install --dev --skip-lock pre-commit
+python3 -m pipenv run pre-commit install
+
+# Run the Python3 program
+python3 -m pipenv run python send_email.py
