@@ -1,7 +1,5 @@
 import base64
-import re
 from email.message import EmailMessage
-from typing import Tuple
 
 import yaml
 from google_auth_oauthlib.flow import InstalledAppFlow
@@ -9,7 +7,7 @@ from googleapiclient.discovery import build, Resource
 from googleapiclient.errors import HttpError
 from requests import HTTPError
 
-import testing_accounts
+import google_accounts
 
 SCOPES = ["https://www.googleapis.com/auth/gmail.send"]
 API_SERVICE_NAME = "gmail"
@@ -34,25 +32,17 @@ def create_message() -> EmailMessage:
     return message
 
 
-def get_username() -> Tuple:
-    add_domain = lambda x: x + "@gmail.com" if not re.search(r"@gmail.com", x) else x
-    tmp = next(iter(google_accounts[::-1][i]))  # temporary recipient
-    _sender = next(iter(account))
-    _recipient = tmp if tmp != _sender else predefined["default_recipient"]
-    return add_domain(_sender), add_domain(_recipient)
-
-
-def send_email(_sender: str, _recipient: str) -> bool:
+def send_email(sender: str, recipient: str) -> bool:
     message = create_message()
-    message["To"] = _recipient
-    message["From"] = _sender
+    message["To"] = recipient
+    message["From"] = sender
     try:
         send = (
             resource()
             .users()
             .messages()
             .send(
-                userId=_sender,
+                userId=sender,
                 body={"raw": base64.urlsafe_b64encode(message.as_bytes()).decode()},
             )
             .execute()
@@ -63,23 +53,25 @@ def send_email(_sender: str, _recipient: str) -> bool:
 
 
 if __name__ == "__main__":
-    google_accounts = testing_accounts.testing_accounts()
+    test_accounts = google_accounts.get_testing_accounts()
     with open("artifacts/predefined.yaml", "r") as yml:
         predefined = yaml.safe_load(yml)
     success = []
     failed = []
-    for i, account in enumerate(google_accounts):
-        sender, recipient = get_username()
-        if sender in predefined["bad_accounts"]:
+    for i, acc in enumerate(test_accounts):
+        if acc in predefined["bad_accounts"]:
             continue
+        to_email = test_accounts[::-1][i]
+        to_email = predefined["default_recipient"] if to_email == acc else to_email
 
         # Print username and password pair for manual login and authorization
-        print(f"Sign in with {sender} and authorize Satellite2")
+        print(f"Sign in with {acc} and authorize Satellite2")
 
-        if send_email(sender, recipient):
-            success.append(sender)
+        tf = lambda x: x + "@gmail.com" if not x.endswith("@gmail.com") else x
+        if send_email(tf(acc), tf(to_email)):
+            success.append(acc)
         else:
-            failed.append(sender)
+            failed.append(acc)
 
     print("++++++++++\nRESULT\n++++++++++")
     for uname in success:

@@ -8,4 +8,4 @@ python3 -m pipenv install --dev --skip-lock pre-commit
 python3 -m pipenv run pre-commit install
 
 # Run the Python3 program
-python3 -m pipenv run python google_accounts.py
+python3 -m pipenv run python send_email.py
