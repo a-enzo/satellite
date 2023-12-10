@@ -41,5 +41,5 @@ The bitwarden collection ID that needs to be activated, such the Testing Account
 
 ## Improvements
 1. Implement `next` or error handling when a Google account has a problem, such as an incorrect password or a failure to authenticate.
-2. Implement Login and OAuth 2.0 using API keys to achieve full automation. Currently, login and authorization are done manually.
+2. Automate login and authorization.
 3. Conceal the `client_secret`. Since it is an internal tool, even if it is currently exposed, the risk is very low.
