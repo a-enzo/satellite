@@ -23,7 +23,7 @@ def service_account_login():
 
 
 def create_message(sender: str, to: str):
-    """Create an email_message for an email.
+    """Create a message for an email.
     Args:
       sender: Email address of the sender.
       to: Email address of the receiver.
@@ -46,8 +46,6 @@ def send_email(service, user_id, message):
       service: Authorized Gmail API service instance.
       user_id: User's email address.
       message: Message to be sent.
-    Returns:
-      Sent Message.
     """
     try:
         sent = (

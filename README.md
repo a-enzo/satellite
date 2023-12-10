@@ -27,10 +27,9 @@ collection_id: bitwarden-collections-id
 <b>bad_accounts</b> <i>(list) [Optional]</i>:
 Accounts that cannot be authenticated or have incorrect passwords.
 
-<b>default_recipient</b> <i>(str)</i>:
-If the tool is unable to generate an email recipient, this is the default one.
+<b>default_recipient</b> <i>(str) [Required]</i>:
 
-<b>collection_id</b> <i>(str)</i>:
+<b>collection_id</b> <i>(str) [Required]</i>:
 The bitwarden collection ID that needs to be activated, such the Testing Accounts collection.
 
 2. Start the program:
